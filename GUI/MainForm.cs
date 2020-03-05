@@ -18,6 +18,7 @@ namespace excel2json.GUI {
 
         // 支持语法高亮的文本框
         private FastColoredTextBox mJsonTextBox;
+        private FastColoredTextBox mCodeTextBox;
 
         // 文本框的样式
         private TextStyle mBrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Regular);
@@ -41,6 +42,9 @@ namespace excel2json.GUI {
             mJsonTextBox.Language = Language.Custom;
             mJsonTextBox.TextChanged += new EventHandler<TextChangedEventArgs>(this.jsonTextChanged);
 
+            mCodeTextBox = createTextBoxInTab(this.tabPageCode);
+            mJsonTextBox.Language = Language.CSharp; ;
+
             //-- componet init states
             this.comboBoxType.SelectedIndex = 0;
             this.comboBoxLowcase.SelectedIndex = 1;
@@ -59,6 +63,7 @@ namespace excel2json.GUI {
             mExportButtonList = new List<ToolStripButton>();
             mExportButtonList.Add(this.btnCopyJSON);
             mExportButtonList.Add(this.btnSaveJson);
+            mExportButtonList.Add(this.btnSaveCsharp);
             enableExportButtons(false);
 
             //-- data manager
@@ -194,6 +199,7 @@ namespace excel2json.GUI {
                 this.statusLabel.Text = "Load completed.";
 
                 mJsonTextBox.Text = mDataMgr.JsonContext;
+                mCodeTextBox.Text = mDataMgr.CsharpCode;
 
                 enableExportButtons(true);
             }
@@ -236,6 +242,9 @@ namespace excel2json.GUI {
                             case 1:
                                 mDataMgr.saveJson(dlg.FileName);
                                 break;
+                            case 2:
+                                mDataMgr.saveCode(dlg.FileName);
+                                break;
                         }
                     }
                     showStatus(string.Format("{0} saved!", dlg.FileName), Color.Black);
@@ -251,6 +260,14 @@ namespace excel2json.GUI {
         /// </summary>
         private void btnSaveJson_Click(object sender, EventArgs e) {
             saveToFile(1, "Json File(*.json)|*.json");
+        }
+
+        /// <summary>
+        /// 工具栏按钮：Save Json
+        /// </summary>
+        private void btnSaveCsharp_Click(object sender, EventArgs e)
+        {
+            saveToFile(2, "C# code File(*.cs)|*.cs");
         }
 
         /// <summary>

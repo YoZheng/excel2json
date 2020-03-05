@@ -14,6 +14,7 @@ namespace excel2json.GUI {
 
         // 导出数据
         private JsonExporter mJson;
+        private CSDefineGenerator mCsharp;
 
         /// <summary>
         /// 导出的Json文本
@@ -22,6 +23,17 @@ namespace excel2json.GUI {
             get {
                 if (mJson != null)
                     return mJson.context;
+                else
+                    return "";
+            }
+        }
+
+        public string CsharpCode
+        {
+            get
+            {
+                if (mCsharp != null)
+                    return mCsharp.code;
                 else
                     return "";
             }
@@ -37,6 +49,17 @@ namespace excel2json.GUI {
             }
         }
 
+        /// <summary>
+        /// 保存Csharp
+        /// </summary>
+        /// <param name="filePath">保存路径</param>
+        public void saveCode(string filePath)
+        {
+            if (mCsharp != null)
+            {
+                mCsharp.SaveToFile(filePath, mEncoding);
+            }
+        }
 
         /// <summary>
         /// 加载Excel文件
@@ -66,10 +89,12 @@ namespace excel2json.GUI {
             mEncoding = cd;
 
             //-- Load Excel
-            ExcelLoader excel = new ExcelLoader(excelPath, header);
+            ExcelLoader excel = new ExcelLoader(excelPath, 0);
 
             //-- 导出JSON
-            mJson = new JsonExporter(excel, options.Lowcase, options.ExportArray, options.DateFormat);
+            mJson = new JsonExporter(excel, options.Lowcase, options.ExportArray, options.DateFormat, header -1);
+
+            mCsharp = new CSDefineGenerator(excelName, excel.Sheets[0]);
         }
     }
 }

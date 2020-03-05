@@ -9,7 +9,7 @@ namespace excel2json {
         /// </summary>
         internal sealed class Options {
             public Options() {
-                this.HeaderRows = 3;
+                this.HeaderRows = 4;
                 this.Encoding = "utf8-nobom";
                 this.Lowcase = false;
                 this.ExportArray = false;
@@ -53,6 +53,13 @@ namespace excel2json {
 
             [Option('d', "date", Required = false, DefaultValue = "yyyy/MM/dd", HelpText = "Date Format String, example: dd / MM / yyy hh: mm:ss.")]
             public string DateFormat {
+                get;
+                set;
+            }
+
+            [Option('p', "csharp", Required = false, HelpText = "export c# data struct coide file path")]
+            public string CShapPath
+            {
                 get;
                 set;
             }

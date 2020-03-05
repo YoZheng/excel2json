@@ -89,11 +89,20 @@ namespace excel2json {
             }
 
             //-- Load Excel
-            ExcelLoader excel = new ExcelLoader(excelPath, header);
+            ExcelLoader excel = new ExcelLoader(excelPath, 0);
 
             //-- export
-            JsonExporter exporter = new JsonExporter(excel, options.Lowcase, options.ExportArray, dateFormat);
+            JsonExporter exporter = new JsonExporter(excel, options.Lowcase, options.ExportArray, dateFormat, header - 1);
             exporter.SaveToFile(exportPath, cd);
+
+            if (options.CShapPath != null && options.CShapPath.Length > 0)
+            {
+                for (int i = 0; i < excel.Sheets.Count; i++)
+                {
+                    CSDefineGenerator exporterCs = new CSDefineGenerator(excelName, excel.Sheets[i]);
+                    exporterCs.SaveToFile(options.CShapPath, cd);
+                }
+            }
         }
     }
 }

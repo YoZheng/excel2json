@@ -36,6 +36,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCopyJSON = new System.Windows.Forms.ToolStripButton();
             this.btnSaveJson = new System.Windows.Forms.ToolStripButton();
+            this.btnSaveCsharp = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHelp = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -53,6 +54,7 @@
             this.comboBoxType = new System.Windows.Forms.ComboBox();
             this.tabControlCode = new System.Windows.Forms.TabControl();
             this.tabPageJSON = new System.Windows.Forms.TabPage();
+            this.tabPageCode = new System.Windows.Forms.TabPage();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             label2 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
@@ -148,6 +150,7 @@
             this.toolStripSeparator1,
             this.btnCopyJSON,
             this.btnSaveJson,
+            this.btnSaveCsharp,
             this.toolStripSeparator2,
             this.btnHelp});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
@@ -193,6 +196,19 @@
             this.btnSaveJson.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSaveJson.ToolTipText = "Save JSON file";
             this.btnSaveJson.Click += new System.EventHandler(this.btnSaveJson_Click);
+
+            // 
+            // btnSaveCsharp
+            // 
+            this.btnSaveCsharp.Image = global::excel2json.Properties.Resources.json;
+            this.btnSaveCsharp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSaveCsharp.Name = "btnSaveCsharp";
+            this.btnSaveCsharp.Size = new System.Drawing.Size(66, 43);
+            this.btnSaveCsharp.Text = "Save C#";
+            this.btnSaveCsharp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSaveCsharp.ToolTipText = "Save C# file";
+            this.btnSaveCsharp.Click += new System.EventHandler(this.btnSaveCsharp_Click);
+
             // 
             // toolStripSeparator2
             // 
@@ -406,6 +422,18 @@
             this.tabPageJSON.TabIndex = 0;
             this.tabPageJSON.Text = "JSON";
             this.tabPageJSON.UseVisualStyleBackColor = true;
+
+            // 
+            // tabPageCode
+            // 
+            this.tabPageCode.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCode.Name = "tabPageCode";
+            this.tabPageCode.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCode.Size = new System.Drawing.Size(509, 466);
+            this.tabPageCode.TabIndex = 1;
+            this.tabPageCode.Text = "C#";
+            this.tabPageCode.UseVisualStyleBackColor = true;
+
             // 
             // backgroundWorker
             // 
@@ -467,10 +495,12 @@
         private System.Windows.Forms.ComboBox comboBoxHeader;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.ToolStripButton btnSaveJson;
+        private System.Windows.Forms.ToolStripButton btnSaveCsharp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Button btnReimport;
         private System.Windows.Forms.TabControl tabControlCode;
         private System.Windows.Forms.TabPage tabPageJSON;
+        private System.Windows.Forms.TabPage tabPageCode;
         private System.Windows.Forms.ComboBox comboBoxDateFormat;
     }
 }

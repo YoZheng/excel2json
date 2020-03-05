@@ -11,6 +11,7 @@ namespace excel2json {
     /// </summary>
     class JsonExporter {
         string mContext = "";
+        private int head;
 
         public string context {
             get {
@@ -22,13 +23,13 @@ namespace excel2json {
         /// 构造函数：完成内部数据创建
         /// </summary>
         /// <param name="excel">ExcelLoader Object</param>
-        public JsonExporter(ExcelLoader excel, bool lowcase, bool exportArray, string dateFormat) {
-
+        public JsonExporter(ExcelLoader excel, bool lowcase, bool exportArray, string dateFormat, int header) {
+            head = header;
             List<DataTable> validSheets = new List<DataTable>();
             for (int i = 0; i < excel.Sheets.Count; i++) {
                 DataTable sheet = excel.Sheets[i];
 
-                if (sheet.Columns.Count > 0 && sheet.Rows.Count > 0)
+                if (sheet.Columns.Count > 0 && sheet.Rows.Count > header)
                     validSheets.Add(sheet);
             }
 
@@ -68,7 +69,7 @@ namespace excel2json {
         private object convertSheetToArray(DataTable sheet, bool lowcase) {
             List<object> values = new List<object>();
 
-            int firstDataRow = 0;
+            int firstDataRow = head;
             for (int i = firstDataRow; i < sheet.Rows.Count; i++) {
                 DataRow row = sheet.Rows[i];
 
@@ -87,7 +88,7 @@ namespace excel2json {
             Dictionary<string, object> importData =
                 new Dictionary<string, object>();
 
-            int firstDataRow = 0;
+            int firstDataRow = head;
             for (int i = firstDataRow; i < sheet.Rows.Count; i++) {
                 DataRow row = sheet.Rows[i];
                 string ID = row[sheet.Columns[0]].ToString();
