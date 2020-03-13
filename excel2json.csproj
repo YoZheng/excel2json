@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertTool.cs" />
     <Compile Include="CSDefineGenerator.cs" />
     <Compile Include="ExcelLoader.cs" />
     <Compile Include="GUI\DataManager.cs" />

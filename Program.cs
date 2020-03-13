@@ -93,14 +93,15 @@ namespace excel2json {
 
             //-- export
             JsonExporter exporter = new JsonExporter(excel, options.Lowcase, options.ExportArray, dateFormat, header - 1);
-            exporter.SaveToFile(exportPath, cd);
+            exporter.SaveToFile(exportPath + "/"+excel.Sheets[0].TableName + ".json", cd);
 
             if (options.CShapPath != null && options.CShapPath.Length > 0)
             {
                 for (int i = 0; i < excel.Sheets.Count; i++)
                 {
                     CSDefineGenerator exporterCs = new CSDefineGenerator(excelName, excel.Sheets[i]);
-                    exporterCs.SaveToFile(options.CShapPath, cd);
+                    var filePath = options.CShapPath + "/"+ ConvertTool.FirstLetterToUpper(excel.Sheets[i].TableName)  + ".cs";
+                    exporterCs.SaveToFile(filePath, cd);
                 }
             }
         }
