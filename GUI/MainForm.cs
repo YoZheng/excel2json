@@ -30,6 +30,8 @@ namespace excel2json.GUI {
 
         // 打开的excel文件名，不包含后缀xlsx。。。
         private String FileName; 
+        // 内部表名
+        private String sheetName; 
 
         /// <summary>
         /// 构造函数，初始化控件初值；创建文本框
@@ -178,7 +180,7 @@ namespace excel2json.GUI {
         /// </summary>
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
             lock (this.mDataMgr) {
-                this.mDataMgr.loadExcel((Program.Options)e.Argument);
+                this.sheetName = this.mDataMgr.loadExcel((Program.Options)e.Argument);
             }
         }
 
@@ -235,7 +237,22 @@ namespace excel2json.GUI {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.RestoreDirectory = true;
                 dlg.Filter = filter;
-                dlg.FileName = FileName;
+                if (type == 1)
+                {
+                    dlg.FileName = sheetName;
+                }
+                else
+                {
+                    var convertSheetName = "";
+                    var sheetNamestrs = sheetName.Split('_');
+                    for (int i = 0; i < sheetNamestrs.Length; i++)
+                    {
+                        convertSheetName += FirstLetterToUpper(sheetNamestrs[i]);
+                    }
+
+                    dlg.FileName = convertSheetName;
+                }
+                
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     lock (mDataMgr) {
                         switch (type) {
@@ -263,7 +280,7 @@ namespace excel2json.GUI {
         }
 
         /// <summary>
-        /// 工具栏按钮：Save Json
+        /// 工具栏按钮：Save Csharp
         /// </summary>
         private void btnSaveCsharp_Click(object sender, EventArgs e)
         {
@@ -298,6 +315,17 @@ namespace excel2json.GUI {
             if (!string.IsNullOrEmpty(mCurrentXlsx)) {
                 loadExcelAsync(mCurrentXlsx);
             }
+        }
+
+        private string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
         }
     }
 }

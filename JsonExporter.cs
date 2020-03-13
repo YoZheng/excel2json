@@ -122,11 +122,14 @@ namespace excel2json {
             foreach (DataColumn column in sheet.Columns) {
                 object value = row[column];
                 //Console.WriteLine("convertRowToDict1: " + sheetsTypeRow[column].ToString());
-                if (sheetsTypeRow != null && sheetsTypeRow[column].ToString().ToLower().Contains("list"))
+                if (sheetsTypeRow != null)
                 {
-                    var listValue = "[" + value.ToString().Replace(';', ',') + "]";
-                    var json = JsonConvert.DeserializeObject(listValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    value = json;
+                    if (sheetsTypeRow[column].ToString().ToLower().Contains("list") || sheetsTypeRow[column].ToString().Contains("[]"))
+                    {
+                        var listValue = "[" + value.ToString().Replace(';', ',') + "]";
+                        var json = JsonConvert.DeserializeObject(listValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                        value = json;
+                    }
                     //Console.WriteLine("convertRowToDict1 DeserializeObject: " + json.ToString());
                 }
 

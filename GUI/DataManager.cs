@@ -65,7 +65,7 @@ namespace excel2json.GUI {
         /// 加载Excel文件
         /// </summary>
         /// <param name="options">导入设置</param>
-        public void loadExcel(Program.Options options) {
+        public string loadExcel(Program.Options options) {
             mOptions = options;
 
             //-- Excel File
@@ -95,6 +95,8 @@ namespace excel2json.GUI {
             mJson = new JsonExporter(excel, options.Lowcase, options.ExportArray, options.DateFormat, header -1);
 
             mCsharp = new CSDefineGenerator(excelName, excel.Sheets[0]);
+
+            return excel.Sheets[0].TableName;
         }
     }
 }

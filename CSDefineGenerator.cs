@@ -17,6 +17,7 @@ namespace excel2json {
         }
 
         string mCode;
+        string sheetName;
 
         public string code {
             get {
@@ -28,6 +29,13 @@ namespace excel2json {
             //-- First Row as Column Name
             if (sheet.Rows.Count < 2)
                 return;
+            // 首字母大写
+            
+            var sheetNamestrs = sheet.TableName.Split('_');
+            for (int i = 0; i < sheetNamestrs.Length; i++)
+            {
+                sheetName += FirstLetterToUpper(sheetNamestrs[i]);
+            }
 
             List<FieldDef> m_fieldList = new List<FieldDef>();
             DataRow typeRow = sheet.Rows[0];
@@ -51,7 +59,7 @@ namespace excel2json {
             sb.AppendFormat("/// Auto Generated Code By {0}.xlsx", excelName);
             sb.AppendLine();
             sb.AppendLine("/// </summary>");
-            sb.AppendFormat("public class {0}\r\n{{", excelName);
+            sb.AppendFormat("public class {0}\r\n{{", sheetName);
             sb.AppendLine();
 
             foreach (FieldDef field in m_fieldList) {
@@ -76,6 +84,17 @@ namespace excel2json {
                 using (TextWriter writer = new StreamWriter(file, encoding))
                     writer.Write(mCode);
             }
+        }
+
+        public string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
         }
     }
 }
