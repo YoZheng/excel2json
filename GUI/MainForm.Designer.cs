@@ -133,13 +133,13 @@
             // 
             // statusLabel
             // 
-            this.statusLabel.IsLink = true;
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.statusLabel.Size = new System.Drawing.Size(130, 17);
-            this.statusLabel.Text = "https://neil3d.github.io";
-            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.statusLabel.Click += new System.EventHandler(this.statusLabel_Click);
+            //this.statusLabel.IsLink = true;
+            //this.statusLabel.Name = "statusLabel";
+            //this.statusLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            //this.statusLabel.Size = new System.Drawing.Size(130, 17);
+            //this.statusLabel.Text = "https://neil3d.github.io";
+            //this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //this.statusLabel.Click += new System.EventHandler(this.statusLabel_Click);
             // 
             // toolStrip
             // 
@@ -217,14 +217,14 @@
             // 
             // btnHelp
             // 
-            this.btnHelp.Image = global::excel2json.Properties.Resources.about;
-            this.btnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(36, 43);
-            this.btnHelp.Text = "Help";
-            this.btnHelp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnHelp.ToolTipText = "Help Document on web";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            //this.btnHelp.Image = global::excel2json.Properties.Resources.about;
+            //this.btnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            //this.btnHelp.Name = "btnHelp";
+            //this.btnHelp.Size = new System.Drawing.Size(36, 43);
+            //this.btnHelp.Text = "Help";
+            //this.btnHelp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            //this.btnHelp.ToolTipText = "Help Document on web";
+            //this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // splitContainer1
             // 

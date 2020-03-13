@@ -44,6 +44,9 @@ namespace excel2json {
 
             //-- 创建代码字符串
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("namespace Hall");
+            sb.AppendLine("{");
             sb.AppendLine("/// <summary>");
             sb.AppendFormat("/// Auto Generated Code By {0}.xlsx", excelName);
             sb.AppendLine();
@@ -52,13 +55,18 @@ namespace excel2json {
             sb.AppendLine();
 
             foreach (FieldDef field in m_fieldList) {
-                sb.AppendFormat("\tpublic {0} {1}; // {2}", field.type, field.name, field.comment);
+                var fieldType = field.type;
+                if (fieldType.ToLower().Contains("list"))
+                {
+                    fieldType = fieldType.Replace("list", "List");
+                }
+                sb.AppendFormat("\tpublic {0} {1}; // {2}", fieldType, field.name, field.comment);
                 sb.AppendLine();
             }
 
             sb.Append('}');
             sb.AppendLine();
-
+            sb.Append('}');
             mCode = sb.ToString();
         }
 

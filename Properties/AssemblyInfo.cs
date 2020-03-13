@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("excel2json")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("https://neil3d.github.io")]
+[assembly: AssemblyCompany("http://192.168.67.10:81/UnityCommon/Excel2JsonTool")]
 [assembly: AssemblyProduct("excel2json")]
-[assembly: AssemblyCopyright("https://neil3d.github.io/app/excel2json.html")]
+[assembly: AssemblyCopyright("http://192.168.67.10:81/UnityCommon/Excel2JsonTool")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

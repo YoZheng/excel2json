@@ -26,11 +26,14 @@ namespace excel2json {
         public JsonExporter(ExcelLoader excel, bool lowcase, bool exportArray, string dateFormat, int header) {
             head = header;
             List<DataTable> validSheets = new List<DataTable>();
+            List<DataRow> sheetsTypeRow = new List<DataRow>();
             for (int i = 0; i < excel.Sheets.Count; i++) {
                 DataTable sheet = excel.Sheets[i];
 
                 if (sheet.Columns.Count > 0 && sheet.Rows.Count > header)
                     validSheets.Add(sheet);
+                if(sheet.Rows.Count > 0)
+                    sheetsTypeRow.Add(sheet.Rows[0]);
             }
 
             var jsonSettings = new JsonSerializerSettings {
@@ -41,7 +44,7 @@ namespace excel2json {
             if (validSheets.Count == 1) {   // single sheet
 
                 //-- convert to object
-                object sheetValue = convertSheet(validSheets[0], exportArray, lowcase);
+                object sheetValue = convertSheet(validSheets[0], exportArray, lowcase, sheetsTypeRow[0]);
 
                 //-- convert to json string
                 mContext = JsonConvert.SerializeObject(sheetValue, jsonSettings);
@@ -49,24 +52,31 @@ namespace excel2json {
             else { // mutiple sheet
 
                 Dictionary<string, object> data = new Dictionary<string, object>();
-                foreach (var sheet in validSheets) {
-                    object sheetValue = convertSheet(sheet, exportArray, lowcase);
-                    data.Add(sheet.TableName, sheetValue);
+                for (int i = 0; i < validSheets.Count; i++)
+                {
+                    object sheetValue = convertSheet(validSheets[i], exportArray, lowcase, sheetsTypeRow[i]);
+                    data.Add(validSheets[i].TableName, sheetValue);
                 }
+
+                //foreach (var sheet in validSheets)
+                //{
+                //    object sheetValue = convertSheet(sheet, exportArray, lowcase);
+                //    data.Add(sheet.TableName, sheetValue);
+                //}
 
                 //-- convert to json string
                 mContext = JsonConvert.SerializeObject(data, jsonSettings);
             }
         }
 
-        private object convertSheet(DataTable sheet, bool exportArray, bool lowcase) {
+        private object convertSheet(DataTable sheet, bool exportArray, bool lowcase, DataRow sheetsTypeRow) {
             if (exportArray)
-                return convertSheetToArray(sheet, lowcase);
+                return convertSheetToArray(sheet, lowcase, sheetsTypeRow);
             else
                 return convertSheetToDict(sheet, lowcase);
         }
 
-        private object convertSheetToArray(DataTable sheet, bool lowcase) {
+        private object convertSheetToArray(DataTable sheet, bool lowcase, DataRow sheetsTypeRow) {
             List<object> values = new List<object>();
 
             int firstDataRow = head;
@@ -74,7 +84,7 @@ namespace excel2json {
                 DataRow row = sheet.Rows[i];
 
                 values.Add(
-                    convertRowToDict(sheet, row, lowcase, firstDataRow)
+                    convertRowToDict(sheet, row, lowcase, firstDataRow, sheetsTypeRow)
                     );
             }
 
@@ -106,11 +116,20 @@ namespace excel2json {
         /// <summary>
         /// 把一行数据转换成一个对象，每一列是一个属性
         /// </summary>
-        private Dictionary<string, object> convertRowToDict(DataTable sheet, DataRow row, bool lowcase, int firstDataRow) {
+        private Dictionary<string, object> convertRowToDict(DataTable sheet, DataRow row, bool lowcase, int firstDataRow, DataRow sheetsTypeRow = null) {
             var rowData = new Dictionary<string, object>();
             int col = 0;
             foreach (DataColumn column in sheet.Columns) {
                 object value = row[column];
+                //Console.WriteLine("convertRowToDict1: " + sheetsTypeRow[column].ToString());
+                if (sheetsTypeRow != null && sheetsTypeRow[column].ToString().ToLower().Contains("list"))
+                {
+                    var listValue = "[" + value.ToString().Replace(';', ',') + "]";
+                    var json = JsonConvert.DeserializeObject(listValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    value = json;
+                    //Console.WriteLine("convertRowToDict1 DeserializeObject: " + json.ToString());
+                }
+
 
                 if (value.GetType() == typeof(System.DBNull)) {
                     value = getColumnDefault(sheet, column, firstDataRow);
