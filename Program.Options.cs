@@ -63,6 +63,13 @@ namespace excel2json {
                 get;
                 set;
             }
+
+            [Option('s', "jsons", Required = false, HelpText = "export jsonsfile path")]
+            public string JsonsPath
+            {
+                get;
+                set;
+            }
         }
     }
 }

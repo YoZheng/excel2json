@@ -19,6 +19,39 @@ namespace excel2json {
             }
         }
 
+        public JsonExporter(List<ExcelLoader> excels, bool lowcase, bool exportArray, string dateFormat, int header)
+        {
+            head = header;
+            List<DataTable> validSheets = new List<DataTable>();
+            List<DataRow> sheetsTypeRow = new List<DataRow>();
+            for (int i = 0; i < excels.Count; i++)
+            {
+                DataTable sheet = excels[i].Sheets[0];
+
+                if (sheet.Columns.Count > 0 && sheet.Rows.Count > header)
+                    validSheets.Add(sheet);
+
+                if (sheet.Rows.Count > 0)
+                    sheetsTypeRow.Add(sheet.Rows[0]);
+            }
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                DateFormatString = dateFormat,
+                Formatting = Formatting.Indented
+            };
+
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            for (int i = 0; i < validSheets.Count; i++)
+            {
+                object sheetValue = convertSheet(validSheets[i], exportArray, lowcase, sheetsTypeRow[i]);
+                data.Add(validSheets[i].TableName, sheetValue);
+            }
+
+            //-- convert to json string
+            mContext = JsonConvert.SerializeObject(data, jsonSettings);
+        }
+
         /// <summary>
         /// 构造函数：完成内部数据创建
         /// </summary>

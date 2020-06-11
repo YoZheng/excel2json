@@ -3,7 +3,7 @@ using System.IO;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Collections.Generic;
 
 namespace excel2json {
     /// <summary>
@@ -87,6 +87,28 @@ namespace excel2json {
             else {
                 exportPath = Path.ChangeExtension(excelPath, ".json");
             }
+
+            if (options.JsonsPath != null && options.JsonsPath.Length > 0)
+            {
+                DirectoryInfo root = new DirectoryInfo(options.ExcelPath);
+                FileInfo[] files = root.GetFiles();
+                Console.WriteLine("files length: " + files.Length);
+                if (files.Length > 1)
+                {
+                    List<ExcelLoader> excels = new List<ExcelLoader>();
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        Console.WriteLine("files : " + files[i].FullName);
+                        ExcelLoader ex = new ExcelLoader(files[i].FullName, 0);
+                        excels.Add(ex);
+                    }
+
+                    JsonExporter exporterJsons = new JsonExporter(excels, options.Lowcase, options.ExportArray, dateFormat, header - 1);
+                    exporterJsons.SaveToFile(options.JsonsPath + "/confgs.json", cd);
+                    return;
+                }
+            }
+
 
             //-- Load Excel
             ExcelLoader excel = new ExcelLoader(excelPath, 0);
